@@ -1,0 +1,13 @@
+
+body {
+    background-color: #011E41;
+}
+
+.ui.large.header {
+    font-size: 3rem !important;
+    width: 350px !important;
+}
+
+.elux-logo {
+    width: 10rem !important;
+}

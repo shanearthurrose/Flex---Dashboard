@@ -1,0 +1,702 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Twilio Real-Time TaskRouter Dashboard">
+    <meta name="author" content="Ameer Badri, Twilio">
+    <title>Twilio TaskRouter Dashboard</title>
+    <!--  <link href="style.css" rel="stylesheet"> -->
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@1.4.12/lib/theme-default/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css" />
+
+    <link rel="stylesheet" href="./taskrouter_dashboard.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+<body onload="refresh()">
+    <div class="ui four column doubling fluid container" title="TaskRouter Dashboard">
+        <div id="taskrouterDashboard" v-cloak>
+
+            <div class="ui clearing segment v-cloak--hidden">
+                <h1 class="ui right floated header elux-header ">
+                    <img src="./Elux_logo_2.jpg" class="ui middle aligned image elux-logo">
+                </h1>
+            </div>
+            <hr />
+            <div class="ui grid v-cloak--hidden">
+
+                <div class="two wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <h1 class="ui large header ">
+                            Consumer Care
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="ten wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <div class="ui top attached label" v-bind:class="{'red': missedSLA, 'green': withinSLA}"> SLA</div>
+                        <div id="concarelongest" class="value">
+
+                        </div>
+                        <div class="label">
+                            Longest Wait
+                        </div>
+                    </div>
+
+
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="concareCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="concareInprogress" class="value">
+
+                        </div>
+                        <div class="label">
+                            In-Progress
+                        </div>
+                    </div>
+
+                </div>
+                <div class="four wide right aligned column">
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="concareAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Available
+                        </div>
+                    </div>
+                    <div class="ui  yellow statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="concareunAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            unAvailable
+                        </div>
+                    </div>
+                    <div class="ui  black statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="concareTotalAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Offline
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="ui grid v-cloak--hidden">
+
+                <div class="two wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <h1 class="ui large header ">
+                            AEG
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="ten wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <div class="ui top attached label" v-bind:class="{'red': missedSLA, 'green': withinSLA}"> SLA</div>
+                        <div id="aeglongest" class="value">
+
+                        </div>
+                        <div class="label">
+                            Longest Wait
+                        </div>
+                    </div>
+
+
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="aegCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="aegInprogress" class="value">
+
+                        </div>
+                        <div class="label">
+                            In-Progress
+                        </div>
+                    </div>
+
+                </div>
+                <div class="four wide right aligned column">
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="aegAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Available
+                        </div>
+                    </div>
+                    <div class="ui  yellow statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="aegunAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            unAvailable
+                        </div>
+                    </div>
+                    <div class="ui  black statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="aegTotalAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Offline
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+
+            <hr />
+
+            <div class="ui grid v-cloak--hidden">
+
+                <div class="two wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <h1 class="ui large header ">
+                            Escalations
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="ten wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <div class="ui top attached label" v-bind:class="{'red': missedSLA, 'green': withinSLA}"> SLA</div>
+                        <div id="contractlongest" class="value">
+
+                        </div>
+                        <div class="label">
+                            Longest Wait
+                        </div>
+                    </div>
+
+
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Tasks</div>
+                        <div id="contractCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Voice</div>
+                        <div id="contractVoiceCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>					
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Call Back</div>
+                        <div id="contractCallbackCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Voice Mail</div>
+                        <div id="contractVoicemailCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+
+
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="contractInprogress" class="value">
+
+                        </div>
+                        <div class="label">
+                            In-Progress
+                        </div>
+                    </div>
+
+                </div>
+                <div class="four wide right aligned column">
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="contractAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Available
+                        </div>
+                    </div>
+                    <div class="ui  yellow statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="contractunAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            unAvailable
+                        </div>
+                    </div>
+                    <div class="ui  black statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="contractTotalAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Offline
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+
+            <hr />
+            <div class="ui grid v-cloak--hidden">
+
+                <div class="two wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <h1 class="ui large header ">
+                            Beefeater
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="ten wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <div class="ui top attached label" v-bind:class="{'red': missedSLA, 'green': withinSLA}"> SLA</div>
+                        <div id="beefeaterlongest" class="value">
+
+                        </div>
+                        <div class="label">
+                            Longest Wait
+                        </div>
+                    </div>
+
+
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="beefeaterCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="beefeaterInprogress" class="value">
+
+                        </div>
+                        <div class="label">
+                            In-Progress
+                        </div>
+                    </div>
+
+                </div>
+                <div class="four wide right aligned column">
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="beefeaterAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Available
+                        </div>
+                    </div>
+                    <div class="ui  yellow statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="beefeaterunAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            unAvailable
+                        </div>
+                    </div>
+                    <div class="ui  black statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="beefeaterTotalAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Offline
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+
+            <hr />
+            <div class="ui grid v-cloak--hidden">
+
+                <div class="two wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <h1 class="ui large header ">
+                            Vintec
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="ten wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <div class="ui top attached label" v-bind:class="{'red': missedSLA, 'green': withinSLA}"> SLA</div>
+                        <div id="vinteclongest" class="value">
+
+                        </div>
+                        <div class="label">
+                            Longest Wait
+                        </div>
+                    </div>
+
+
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="vintecCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="vintecInprogress" class="value">
+
+                        </div>
+                        <div class="label">
+                            In-Progress
+                        </div>
+                    </div>
+
+                </div>
+                <div class="four wide right aligned column">
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="vintecAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Available
+                        </div>
+                    </div>
+                    <div class="ui  yellow statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="vintecunAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            unAvailable
+                        </div>
+                    </div>
+                    <div class="ui  black statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="vintecTotalAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Offline
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+
+            <hr />
+            <div class="ui grid v-cloak--hidden">
+
+                <div class="two wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <h1 class="ui large header ">
+                            Retail
+                        </h1>
+                    </div>
+                </div>
+
+                <div class="ten wide center aligned column">
+                    <div class="ui  statistic segment">
+                        <div class="ui top attached label" v-bind:class="{'red': missedSLA, 'green': withinSLA}"> SLA</div>
+                        <div id="retaillongest" class="value">
+
+                        </div>
+                        <div class="label">
+                            Longest Wait
+                        </div>
+                    </div>
+
+
+                    <div class="ui  red statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="retailCreated" class="value">
+
+                        </div>
+                        <div class="label">
+                            Waiting
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Calls</div>
+                        <div id="retailInprogress" class="value">
+
+                        </div>
+                        <div class="label">
+                            In-Progress
+                        </div>
+                    </div>
+
+                </div>
+                <div class="four wide right aligned column">
+                    <div class="ui  green statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="retailAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Available
+                        </div>
+                    </div>
+                    <div class="ui  yellow statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="retailunAvailableAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            unAvailable
+                        </div>
+                    </div>
+                    <div class="ui  black statistic segment">
+                        <div class="ui top attached label">Agents</div>
+                        <div id="retailTotalAgents" class="value">
+
+                        </div>
+                        <div class="label">
+                            Offline
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--script src="https://code.jquery.com/jquery-3.2.1.min.js"></!-script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/element-ui@1.4.12/lib/index.js"></script>
+    <script src="https://media.twiliocdn.com/sdk/js/sync/releases/0.5.10/twilio-sync.js"></script>
+    <!--script src="static/taskrouter_dashboard.js"></!-script-->
+
+    <script>
+
+        var theUrl = '';
+
+        var HttpClient = function() {
+        this.get = function(aUrl, aCallback) {
+        var anHttpRequest = new XMLHttpRequest();
+        anHttpRequest.onreadystatechange = function() {
+        if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
+        aCallback(anHttpRequest.responseText);
+        }
+
+        anHttpRequest.open( "GET", aUrl, true );
+
+        anHttpRequest.setRequestHeader("Access-Control-Allow-Origin", "*");
+        anHttpRequest.setRequestHeader("Access-Control-Allow-Credentials", "true");
+        anHttpRequest.setRequestHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+        anHttpRequest.setRequestHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+
+        anHttpRequest.send( null );
+        }
+        }
+
+        function updateStats(sid,queue) {
+        //console.log("start:"+queue);
+        var client = new HttpClient();
+
+        client.get(`https://${window.location.hostname}/queueStats?queueSID=${sid}`, function(response) {
+        queueStats = JSON.parse(response);
+        //console.log(queueStats);
+
+        // $(document).ready(function() {
+
+        //$('#'+queue+'longest').text(queueStats.longestTaskWaitingAge);
+
+
+        var unavailable = 0;
+        var available = 0;
+        var offline = 0;
+
+        var hours = Math.floor(queueStats.task_queue_real_time_statistics.longestTaskWaitingAge / 60 / 60);
+        //var minutes = Math.floor(queueStats.longestTaskWaitingAge / 60) - (hours * 60);
+
+        var minutes = Math.floor(queueStats.task_queue_real_time_statistics.longestTaskWaitingAge / 60);
+        var seconds = queueStats.task_queue_real_time_statistics.longestTaskWaitingAge % 60;
+
+        var formatted =  minutes + ':' + seconds.toString().padStart(2, '0');
+
+        for (var i = 0; i < queueStats.task_queue_real_time_statistics.activityStatistics.length; i++){
+        var obj = queueStats.task_queue_real_time_statistics.activityStatistics[i];
+        var workers = 0;
+        //
+        for (var key in obj){
+        var attrName = key;
+        var attrValue = obj[key];
+        if ( attrName == "workers"){
+        workers = attrValue;
+        }
+        if ( attrName == "friendly_name" ){
+        if ( attrValue != "Available" && attrValue != "Offline" ){
+        console.log(attrValue);
+        unavailable = unavailable + workers;
+        }
+        if ( attrValue == "Available" ){
+        available = available + workers;
+        }
+        if ( attrValue == "Offline" ){
+        offline = offline + workers;
+        }
+        }
+        }
+        }
+
+
+
+
+        console.log("unAvailable:"+unavailable);
+        console.log("Available:"+available);
+
+        console.log("offline:"+offline);
+        console.log("format:"+formatted);
+
+        $('#'+queue+'longest').text(formatted);
+
+        $('#'+queue+'Completed').text(queueStats.task_queue_real_time_statistics.tasksByStatus.completed);
+        $('#'+queue+'Canceled').text(queueStats.task_queue_real_time_statistics.tasksByStatus.canceled);
+        $('#'+queue+'Reserved').text(queueStats.task_queue_real_time_statistics.tasksByStatus.reserved);
+        $('#'+queue+'Inprogress').text(queueStats.task_queue_real_time_statistics.tasksByStatus.assigned);
+        $('#'+queue+'Created').text(queueStats.task_queue_real_time_statistics.	tasksByStatus.pending);
+
+        $('#'+queue+'VoicemailCreated').text(queueStats.totalResult.voicemailTotal);
+        $('#'+queue+'VoiceCreated').text(queueStats.totalResult.voiceTotal);	
+        $('#'+queue+'CallbackCreated').text(queueStats.totalResult.callbackTotal);			
+		
+		//alert(queueStats.totalResult.callbackTotal);	
+
+        $('#'+queue+'unAvailableAgents').text(unavailable);
+        $('#'+queue+'AvailableAgents').text(available);
+        $('#'+queue+'TotalAgents').text(offline);
+
+
+        //console.log("end:"+queue);
+        });
+        //  });
+
+        }
+
+
+        function refresh() {
+        // myVar =  setInterval(updateStats('WQ165d35a91af97db1809f1499d65c203e','contract'), 1000);
+        //  myVar1 = setInterval(updateStats('WQ27c42c8dfccbc28f5e2e23f1756c5ef0','aeg'), 1000);
+        myVar2 =  setInterval(function(){
+        updateStats('WQ889d8a5289525e3bd5f7bf5abb9388fd','contract');
+        updateStats('WQfc77bdfb297c909f87762dfff6759d4f','retail');
+        updateStats('WQa1e0945c9735f26f7f0b30b4261d19ad','concare');
+        updateStats('WQ27c42c8dfccbc28f5e2e23f1756c5ef0','aeg')
+        updateStats('WQ4ae3a13acdc7a5f61693fe64b13850e4','beefeater')
+        updateStats('WQ3e3db5e65f0ec4042d0b1b24d88529aa','vintec')
+        }, 30000);
+        }
+    </script>
+
+
+
+</body>
+</html>
